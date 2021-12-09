@@ -43,7 +43,8 @@
         android:layout_x="87dp"
         android:layout_y="94dp"
         android:ems="10"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
+        android:numeric="signed"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="62dp" />
 
