@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.ContentInfo;
@@ -27,6 +28,7 @@ class Jump extends Thread{
 
     @Override
     public void run() {
+
         EditText username = (EditText)cont.findViewById(R.id.editText_username);
         EditText password = (EditText)cont.findViewById(R.id.editText_password);
         Intent intent = new Intent(cont,FreeRun.class);
@@ -35,6 +37,7 @@ class Jump extends Thread{
         cont.startActivity(intent);
         cont.finish();
     }
+
 }
 class SignJump extends Thread{
     private Activity cont;
@@ -61,11 +64,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button but = (Button)findViewById(R.id.button_freeRun);
         but.setOnClickListener(this);
         ((Button)findViewById(R.id.button_signup)).setOnClickListener(this);
+        EditText username = findViewById(R.id.editText_username);
+        EditText password = findViewById(R.id.editText_password);
+        final SharedPreferences prefs = getSharedPreferences("data", Context.MODE_PRIVATE);
+        username.setText(prefs.getString("username",""));
+        password.setText(prefs.getString("password",""));
 
     }
 
     @Override
     public void onClick(View view) {
+        final SharedPreferences.Editor editor = getSharedPreferences("data", Context.MODE_PRIVATE).edit();
+        EditText username = findViewById(R.id.editText_username);
+        EditText password = findViewById(R.id.editText_password);
+        editor.putString("username",username.getText().toString());
+        editor.putString("password",password.getText().toString());
+        editor.apply();
         if(view.getId()==R.id.button_freeRun){
             jumpFreeRun();
         }else{
