@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import fucklegym.top.entropy.User;
@@ -68,9 +72,11 @@ public class SignUp extends AppCompatActivity {
     public static final int ACTIVITYDOESNOTEXIST = 3;
     private TextView textView;
     private User user;
+    private ListView listView;
     private EditText editText;
     private HashMap<String,String> activities;
     private Handler handler;
+    private ArrayList<String> list = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +84,7 @@ public class SignUp extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         user = new User(bundle.getString("username"),bundle.getString("password"));
-
-        this.textView = (TextView)findViewById(R.id.textView_allActivities);
+        this.listView =  (ListView)findViewById(R.id.list_view);
         this.editText = (EditText)findViewById(R.id.editText_activityName);
         handler = new Handler(){
             public void handleMessage(Message msg) {
@@ -90,9 +95,10 @@ public class SignUp extends AppCompatActivity {
                         HashMap<String ,String> acts = (HashMap<String ,String >)msg.obj;
                         StringBuffer buf = new StringBuffer();
                         for(String str:acts.keySet()){
-                            buf.append(str+"\n");
+                            list.add(str);
                         }
-                        textView.setText(buf.toString());
+                        ArrayAdapter<String> ArrayAdapter = new ArrayAdapter<String>(SignUp.this,android.R.layout.simple_list_item_1,list);
+                        listView.setAdapter(ArrayAdapter);
                         break;
                     case UPLOADSUCCESS:
                         Toast.makeText(SignUp.this,"打卡成功",Toast.LENGTH_LONG).show();
@@ -106,6 +112,16 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         };
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+               editText.setText(list.get(arg2));
+            }
+
+        });
+
         new LoadActivitiresThread(user,handler).start();
         ((Button)findViewById(R.id.button_uploadSign)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,5 +129,7 @@ public class SignUp extends AppCompatActivity {
                     new SignThread(user,handler,editText.getText().toString()).start();
             }
         });
+
     }
+
 }
