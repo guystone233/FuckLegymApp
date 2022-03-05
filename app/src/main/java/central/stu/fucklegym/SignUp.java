@@ -15,7 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import fucklegym.top.entropy.User;
@@ -97,6 +100,8 @@ public class SignUp extends AppCompatActivity {
                         for(String str:acts.keySet()){
                             list.add(str);
                         }
+                        Comparator cmp = Collator.getInstance(java.util.Locale.CHINA);
+                        Collections.sort(list,cmp);
                         ArrayAdapter<String> ArrayAdapter = new ArrayAdapter<String>(SignUp.this,android.R.layout.simple_list_item_1,list);
                         listView.setAdapter(ArrayAdapter);
                         break;
