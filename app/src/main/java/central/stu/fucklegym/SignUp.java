@@ -67,6 +67,29 @@ class SignThread extends Thread{
         }
     }
 }
+class SignUpThread extends Thread{
+    private User user;
+    private Handler handler;
+    private String name;
+    public SignUpThread(User user,Handler handler,String nme){
+        this.user = user;
+        this.handler = handler;
+        this.name = nme;
+    }
+    @Override
+    public void run() {
+        try {
+            if(user.getTodayActivities().containsKey(name)){
+                user.signUp(name);
+                handler.sendEmptyMessage(SignUp.UPLOADSUCCESS);
+            }else handler.sendEmptyMessage(SignUp.ACTIVITYDOESNOTEXIST);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            handler.sendEmptyMessage(SignUp.UPLOADFAIL);
+        }
+    }
+}
 
 public class SignUp extends AppCompatActivity {
     public static final int GETACTIVITIES = 0;
@@ -88,7 +111,7 @@ public class SignUp extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         user = new User(bundle.getString("username"),bundle.getString("password"));
         this.listView =  (ListView)findViewById(R.id.list_view);
-        this.editText = (EditText)findViewById(R.id.editText_activityName);
+        this.editText = (EditText)findViewById(R.id.editText);
         handler = new Handler(){
             public void handleMessage(Message msg) {
                 // 处理消息
@@ -106,10 +129,10 @@ public class SignUp extends AppCompatActivity {
                         listView.setAdapter(ArrayAdapter);
                         break;
                     case UPLOADSUCCESS:
-                        Toast.makeText(SignUp.this,"打卡成功",Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignUp.this,"成功",Toast.LENGTH_LONG).show();
                         break;
                     case UPLOADFAIL:
-                        Toast.makeText(SignUp.this,"打卡失败",Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignUp.this,"失败",Toast.LENGTH_LONG).show();
                         break;
                     case ACTIVITYDOESNOTEXIST:
                         Toast.makeText(SignUp.this,"活动不存在，请检查名称是否写错",Toast.LENGTH_LONG);
@@ -132,6 +155,12 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                     new SignThread(user,handler,editText.getText().toString()).start();
+            }
+        });
+        ((Button)findViewById(R.id.button_Signup)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new SignUpThread(user,handler,editText.getText().toString()).start();
             }
         });
 

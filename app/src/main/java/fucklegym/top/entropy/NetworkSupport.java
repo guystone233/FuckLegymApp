@@ -3,6 +3,7 @@ package fucklegym.top.entropy;
 import android.util.Log;
 
 import com.alibaba.fastjson.*;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ public class NetworkSupport {
     private static final String URL_CANCELSIGNUP = "https://cpes.legym.cn/education/app/activity/cancelSignUp";
     private static final String URL_SIGN = "https://cpes.legym.cn/education/activity/app/attainability/sign";
     private static final double CALORIE_PER_MILEAGE = 58.3;
+    private static final String SALT = "3soJs320~*%$wd";
     public static JSONObject postForReturn(String url, Map<String,String> header,String content) throws IOException {
         URL serverUrl = new URL(url);
         HttpsURLConnection conn = (HttpsURLConnection) serverUrl.openConnection();
@@ -127,18 +130,29 @@ public class NetworkSupport {
         Random random = new Random(System.currentTimeMillis());
         JSONObject content = new JSONObject();
         double pace = 0.5+random.nextInt(6)/10.0;
+        content.put("type","自由跑");
+        content.put("paceNumber",(int)(totMileage*1000/pace/2));
         content.put("paceRange",pace);
-        content.put("totalMileage",totMileage);
-        content.put("limitationsGoalsSexInfoId",limitationsGoalsSexInfoId);
+        int avePace=((int)((endTime.getTime()-startTime.getTime())/1000/totMileage))*1000;
+        content.put("avePace",avePace);
+        content.put("signPoint",new JSONArray());
+        content.put("uneffectiveReason","");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.put("endTime",formatter.format(endTime));
-        content.put("startTime",formatter.format(startTime));
-        content.put("effectiveMileage",validMileage);
-        content.put("semesterId",semesterId);
+
+        content.put("limitationsGoalsSexInfoId",limitationsGoalsSexInfoId);
+        content.put("systemVersion","15.1");
+        int calorie = (int)(totMileage*CALORIE_PER_MILEAGE);
+        content.put("calorie",calorie);
         content.put("scoringType",1);
-        content.put("signPoint",new JSONArray());
-        content.put("totalPart",1);
-        content.put("calorie",(int)(totMileage*CALORIE_PER_MILEAGE));
+        content.put("effectiveMileage",validMileage);
+        content.put("deviceType","美版、台版iPhone 7 Plus");
+        int keeptime=(int)(endTime.getTime()-startTime.getTime())/1000;
+        content.put("keepTime",keeptime);
+        content.put("totalMileage",totMileage);
+        content.put("gpsMileage",totMileage);
+        content.put("totalPart",1);//content.put("totalPart",1);
+        content.put("effectivePart",1);
         ArrayList<HashMap<String,String>> runPoints = new ArrayList<>();
         ArrayList<Pair<Double,Double>> genPoints = PathGenerator.genRegularRoutine(250);
         for(Pair<Double,Double> point :genPoints){
@@ -148,12 +162,15 @@ public class NetworkSupport {
             runPoints.add(tmp);
         }
         content.put("routineLine",runPoints);
-        content.put("type","自由跑");
-        content.put("paceNumber",(int)(totMileage*1000/pace/2));
-        content.put("effectivePart",1);
-        content.put("gpsMileage",totMileage);
-        content.put("uneffectiveReason","");
-        content.put("avePace",((int)((endTime.getTime()-startTime.getTime())/1000/totMileage))*1000);
+        content.put("startTime",formatter.format(startTime));
+        content.put("semesterId",semesterId);
+        content.put("appVersion","3.1.0");
+        content.put("signDigital",DigestUtils.sha1Hex(validMileage +"1"+formatter.format(startTime)+ calorie +avePace+keeptime+(int)(totMileage*1000/pace/2)+totMileage+"1"+SALT));
+
+
+
+
+
         //System.out.println(content.toString());return UploadStatus.NOTLOGIN;
         JSONObject res = postForReturn(URL_UPLOAD_RUNNINGDETAIL,header,content.toString());
         //System.out.println(res.toString());

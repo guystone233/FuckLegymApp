@@ -53,6 +53,13 @@ public class User {
         NetworkSupport.sign(accessToken,id,activities.get(name));
         return NetworkSupport.UploadStatus.SUCCESS;
     }
+    public NetworkSupport.UploadStatus signUp(String name) throws IOException {
+        if(!hasLogin)login();
+        if(this.activities == null)getTodayActivities();
+        if(!activities.containsKey(name))return NetworkSupport.UploadStatus.FAIL;
+        NetworkSupport.signup(accessToken,activities.get(name));
+        return NetworkSupport.UploadStatus.SUCCESS;
+    }
     public void setDaliyMileage(double daliyMileage) {
         this.daliyMileage = daliyMileage;
     }
