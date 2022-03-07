@@ -31,12 +31,8 @@
         android:id="@+id/button_Signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="报名" />
-    <Button
-        android:id="@+id/button_uploadSign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="签到" />
+        android:text="报名并签到" />
+
 
 
 

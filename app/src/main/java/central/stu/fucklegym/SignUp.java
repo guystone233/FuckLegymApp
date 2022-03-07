@@ -151,16 +151,12 @@ public class SignUp extends AppCompatActivity {
         });
 
         new LoadActivitiresThread(user,handler).start();
-        ((Button)findViewById(R.id.button_uploadSign)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    new SignThread(user,handler,editText.getText().toString()).start();
-            }
-        });
+
         ((Button)findViewById(R.id.button_Signup)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new SignUpThread(user,handler,editText.getText().toString()).start();
+                new SignThread(user,handler,editText.getText().toString()).start();
             }
         });
 

@@ -141,12 +141,12 @@ public class NetworkSupport {
         content.put("endTime",formatter.format(endTime));
 
         content.put("limitationsGoalsSexInfoId",limitationsGoalsSexInfoId);
-        content.put("systemVersion","15.1");
+        content.put("systemVersion","15.0");
         int calorie = (int)(totMileage*CALORIE_PER_MILEAGE);
         content.put("calorie",calorie);
         content.put("scoringType",1);
         content.put("effectiveMileage",validMileage);
-        content.put("deviceType","美版、台版iPhone 7 Plus");
+        content.put("deviceType","美版、台版iPhone "+"1"+ (random.nextInt(3)+1));
         int keeptime=(int)(endTime.getTime()-startTime.getTime())/1000;
         content.put("keepTime",keeptime);
         content.put("totalMileage",totMileage);
