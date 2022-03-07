@@ -35,9 +35,9 @@ public class User {
         this.daliyMileage = info.getdailyMileage();
         this.hasLogin = true;
     }
-    public NetworkSupport.UploadStatus uploadRunningDetail(Date startTime, Date endTime, double totalMileage, double validMileage) throws IOException {
+    public NetworkSupport.UploadStatus uploadRunningDetail(Date startTime, Date endTime, double totalMileage, double validMileage,int campus) throws IOException {
         if(!this.hasLogin)login();
-        return NetworkSupport.uploadRunningDetail(accessToken,limitationsGoalsSexInfoId,semesterId,totalMileage,validMileage,startTime,endTime);
+        return NetworkSupport.uploadRunningDetail(accessToken,limitationsGoalsSexInfoId,semesterId,totalMileage,validMileage,startTime,endTime,campus);
 
     }
     public Map<String, String> getTodayActivities() throws IOException {

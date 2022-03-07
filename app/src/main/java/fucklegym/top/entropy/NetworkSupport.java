@@ -122,7 +122,7 @@ public class NetworkSupport {
         dai = info.getJSONObject("data").getDouble("dailyMileage");
         return new RunningLimitInfo(info.getJSONObject("data").getString("limitationsGoalsSexInfoId").toString(), tot, dai);
     }
-    public static UploadStatus uploadRunningDetail(String accessToken, String limitationsGoalsSexInfoId,String semesterId, double totMileage, double validMileage, Date startTime,Date endTime) throws IOException {
+    public static UploadStatus uploadRunningDetail(String accessToken, String limitationsGoalsSexInfoId,String semesterId, double totMileage, double validMileage, Date startTime,Date endTime,int campus) throws IOException {
         //这函数啥也不管，只管上传，检查数据是否安全不是它的事
         HashMap<String,String> header = new HashMap<>();
         header.put("Content-type","application/json");
@@ -154,7 +154,7 @@ public class NetworkSupport {
         content.put("totalPart",1);//content.put("totalPart",1);
         content.put("effectivePart",1);
         ArrayList<HashMap<String,String>> runPoints = new ArrayList<>();
-        ArrayList<Pair<Double,Double>> genPoints = PathGenerator.genRegularRoutine(250);
+        ArrayList<Pair<Double,Double>> genPoints = PathGenerator.genRegularRoutine(250,campus);
         for(Pair<Double,Double> point :genPoints){
             HashMap<String,String> tmp = new HashMap<>();
             tmp.put("latitude",point.getKey().toString());
