@@ -255,8 +255,8 @@ public class PathGenerator {
         Random rad = new Random(System.currentTimeMillis());
         for(int i = 1;i<=count;i++){
             switch (campus){
-                case 0: points.add(new Pair(base_lat0 + rad.nextInt(10000) / 1000000.0/2.0,base_lon0 + rad.nextInt(10000) / 1000000.0/2.0));
-                case 1: points.add(new Pair(base_lat1 + rad.nextInt(10000) / 1000000.0/2.0,base_lon1 + rad.nextInt(10000) / 1000000.0/2.0));
+                case 0: points.add(new Pair(base_lat0 + rad.nextInt(10000) / 1000000.0/2.0,base_lon0 + rad.nextInt(10000) / 1000000.0/2.0));break;
+                case 1: points.add(new Pair(base_lat1 + rad.nextInt(10000) / 1000000.0/2.0,base_lon1 + rad.nextInt(10000) / 1000000.0/2.0));break;
             }
 
         }
@@ -267,8 +267,8 @@ public class PathGenerator {
         Random rad = new Random(System.currentTimeMillis());
         for(int i = 0;i<=count;i++){
             switch (campus){
-                case 0:points.add(new Pair(latitude0[i%latitude0.length]+rad.nextInt(20)*1e-13,lontitude0[i%latitude0.length]+rad.nextInt(10)*1e-14));
-                case 1:points.add(new Pair(latitude1[i%latitude1.length]+rad.nextInt(20)*1e-13,lontitude1[i%latitude1.length]+rad.nextInt(10)*1e-14));
+                case 0:points.add(new Pair(latitude0[i%latitude0.length]+rad.nextInt(20)*1e-13,lontitude0[i%latitude0.length]+rad.nextInt(10)*1e-14));break;
+                case 1:points.add(new Pair(latitude1[i%latitude1.length]+rad.nextInt(20)*1e-13,lontitude1[i%latitude1.length]+rad.nextInt(10)*1e-14));break;
             }
 
         }
