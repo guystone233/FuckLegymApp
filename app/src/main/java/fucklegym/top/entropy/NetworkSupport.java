@@ -25,7 +25,7 @@ public class NetworkSupport {
     }
 
     private static final String URL_LOGIN = "https://cpes.legym.cn/authorization/user/manage/login";
-    private static final String URL_UPLOAD_RUNNINGDETAIL = "https://cpes.legym.cn/running/app/uploadRunningDetails";
+    private static final String URL_UPLOAD_RUNNINGDETAIL = "https://cpes.legym.cn/running/app/v2/uploadRunningDetails";
     private static final String URL_GETSEMESTERID = "https://cpes.legym.cn/education/semester/getCurrent";
     private static final String URL_GETRUNNINGLIMIT = "https://cpes.legym.cn/running/app/getRunningLimit";
     private static final String URL_TODAYACTIVITIES = "https://cpes.legym.cn/education/app/activity/getActivityList";
@@ -33,7 +33,7 @@ public class NetworkSupport {
     private static final String URL_CANCELSIGNUP = "https://cpes.legym.cn/education/app/activity/cancelSignUp";
     private static final String URL_SIGN = "https://cpes.legym.cn/education/activity/app/attainability/sign";
     private static final double CALORIE_PER_MILEAGE = 58.3;
-    private static final String SALT = "3soJs320~*%$wd";
+    private static final String SALT = "itauVfnexHiRigZ6";
     public static JSONObject postForReturn(String url, Map<String,String> header,String content) throws IOException {
         URL serverUrl = new URL(url);
         HttpsURLConnection conn = (HttpsURLConnection) serverUrl.openConnection();
@@ -164,7 +164,7 @@ public class NetworkSupport {
         content.put("routineLine",runPoints);
         content.put("startTime",formatter.format(startTime));
         content.put("semesterId",semesterId);
-        content.put("appVersion","3.1.0");
+        content.put("appVersion","3.8.6");
         content.put("signDigital",DigestUtils.sha1Hex(validMileage +"1"+formatter.format(startTime)+ calorie +avePace+keeptime+(int)(totMileage*1000/pace/2)+totMileage+"1"+SALT));
 
 
